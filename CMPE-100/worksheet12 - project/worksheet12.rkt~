@@ -1,0 +1,57 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname worksheet12) (read-case-sensitive #t) (teachpacks ((lib "image.ss" "teachpack" "htdp") (lib "universe.ss" "teachpack" "2htdp") (lib "abstraction.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "image.ss" "teachpack" "htdp") (lib "universe.ss" "teachpack" "2htdp") (lib "abstraction.rkt" "teachpack" "2htdp")) #f)))
+; definition the structure
+; includes artist, genre, price
+(define-struct CD (artist genre price))
+
+; constructor
+(define cd1 (make-CD "Metro Boomin" "Rap" 5))
+(define cd2 (make-CD "Juice WRLD" "Rap" 999))
+(define cd3 (make-CD  "XXX" "Rap" 10))
+(define cd4 (make-CD "Evgeny Grinko" "Classical" 1))
+(define cd5 (make-CD "Khontkar" "Trap" 4))
+
+; selector
+
+(CD-artist cd1)
+(CD-genre cd5)
+
+; predictor
+(CD? cd1)
+(CD? "Khontkar")
+
+; list of CD
+(define cdList (list cd1 cd2 cd3 cd4 cd5))
+
+; contract: list genre -> list
+; to produce a music album collection with given genre
+; function
+(define (mac alist g)
+  (cond
+    ((empty? alist) '())
+    ((string=? g (CD-genre (first alist))) (cons (CD-artist (first alist)) (mac (rest alist) g)))
+    (else (mac (rest alist) g))))
+
+; contract: list genre -> integer
+; purpose: to produce total price of given mac
+; function
+(define (totalPrice alist g)
+  (cond
+    ((empty? alist) 0)
+    ((string=? g (CD-genre (first alist))) (+ (CD-price (first alist)) (totalPrice (rest alist) g)))
+    (else (totalPrice (rest alist) g))))
+
+; contract: list -> list
+; purpose: to produce a list containing all the artists of CDs
+; function
+(define (CDartist alist)
+  (cond
+    ((empty? alist) '())
+    (else (cons (CD-artist (first alist)) (CDartist (rest alist))))))
+
+
+;Testings:
+(mac cdList "Trap")
+(totalPrice cdList "Rap")
+(CDartist cdList)

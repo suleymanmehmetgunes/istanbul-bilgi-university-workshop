@@ -1,0 +1,40 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-beginner-reader.ss" "lang")((modname worksheet07) (read-case-sensitive #t) (teachpacks ((lib "image.rkt" "teachpack" "2htdp") (lib "abstraction.rkt" "teachpack" "2htdp") (lib "batch-io.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp") (lib "web-io.rkt" "teachpack" "2htdp") (lib "itunes.rkt" "teachpack" "2htdp"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "image.rkt" "teachpack" "2htdp") (lib "abstraction.rkt" "teachpack" "2htdp") (lib "batch-io.rkt" "teachpack" "2htdp") (lib "universe.rkt" "teachpack" "2htdp") (lib "web-io.rkt" "teachpack" "2htdp") (lib "itunes.rkt" "teachpack" "2htdp")) #f)))
+;Question 01
+
+(define (countDigit n)
+  (cond
+    ((and (>= (abs n) 0) (<= (abs n) 9)) 1)
+    (else (+ 1 (countDigit (/ (abs n) 10))))))
+
+(countDigit -44)
+
+;Question 02
+
+(define (sumDigit n)
+  (cond
+    ((not (integer? n)) (error "invalid"))
+    ((= n 0) 0)
+    (else (+ (remainder (abs n) 10) (sumDigit (quotient (abs n) 10))))))
+
+(sumDigit -955)
+
+;Question 03
+;check this out again
+
+
+(define (findProperDivisor num)
+  (findProperDivisor_0 num (sub1 num)))
+
+(define (findProperDivisor_0 num x)
+  (cond
+    ((= 1 x) 1)
+    ((= (remainder num x) 0) (+ x (findProperDivisor_0 num (- x 1))))
+    (else (findProperDivisor_0 num (- x 1)))))
+
+
+;test
+(findProperDivisor 20)
+(findProperDivisor 36)
+         
